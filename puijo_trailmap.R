@@ -211,7 +211,7 @@ render_snapshot()
 
 #### To Movie ----
 if(interactive()) {
-  filename_movie = "puijo_trailmap.mp4" #tempfile()
+  filename_movie = "puijo3.mp4" #tempfile()
   
   #By default, the function produces a 12 second orbit at 30 frames per second, at 30 degrees azimuth.
   # \donttest{
@@ -227,12 +227,12 @@ if(interactive()) {
     add_overlay(layer_scrub, alphalayer = 0.9) %>%
     add_overlay(layer_buildings) %>%
     add_overlay(layer_trails) %>%
-    add_overlay(generate_line_overlay(strava,
-                                      extent = extent_zoomed,
-                                      linewidth = 10, 
-                                      color="red",
-                                      heightmap = puijo_zoom_mat)) %>% 
+    # add_overlay(generate_line_overlay(strava,
+    #                                   extent = extent_zoomed,
+    #                                   linewidth = 10, 
+    #                                   color="red",
+    #                                   heightmap = puijo_zoom_mat)) %>% 
     plot_3d(puijo_zoom_mat, windowsize=c(1200,800))
   #Un-comment the following to run:
-  render_movie(filename = filename_movie, zoom = .4, fov = 60)
+  render_movie(filename = filename_movie, zoom = .4, fov = 60, phi = 30)
 }
