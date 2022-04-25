@@ -1,0 +1,32 @@
+---
+title: "Kuopion reittikartat"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Puijo
+
+<video width="640" height="480" autoplay loop>
+  <source src="https://research.janimiettinen.fi/material/trailmaps/img/trailmaps/puijo.mp4" type="video/mp4">
+</video>
+
+![](img/trailmaps/puijo_trailmap.png)
+
+## Jynkävuori
+
+<video width="640" height="480" autoplay loop>
+  <source src="https://research.janimiettinen.fi/material/trailmaps/img/trailmaps/jynkanvuori.mp4" type="video/mp4">
+</video>
+
+![](img/trailmaps/jynkanvuori.png)
+
+## Vanuvuori
+
+<video width="640" height="480" autoplay loop>
+  <source src="https://research.janimiettinen.fi/material/trailmaps/img/trailmaps/vanuvuori.mp4" type="video/mp4">
+</video>
+
+![](img/trailmaps/vanuvuori.png)
