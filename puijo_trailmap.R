@@ -14,8 +14,8 @@ library(XML)
 # altitude color for the routes?
 
 ## Data and map crop ----
-r1 <- raster("data/P5114D.tif")
-r2 <- raster("data/P5123C.tif")
+r1 <- raster("data/puijo/P5114D.tif")
+r2 <- raster("data/puijo/P5123C.tif")
 puijo <- merge(r1,r2)
 
 ## For faster test plot, let's downsize the matrix
@@ -57,14 +57,39 @@ plot_map(base_map)
 
 ## Strava gpx to map -----
 source("gpx_to_points.R") ## function to trasform gpx to sf object
-df_strava <- gpx_to_pts("data/Morning_Ride.gpx")
+
+## Strava main
+df_strava <- gpx_to_pts("data/puijo/Morning_Ride.gpx")
 strava <- st_transform(df_strava, crs = crs(puijo))
+# strava_main <- strava[strava$time > "2022-03-11 09:03:00" & strava$time < "2022-03-11 09:39:00",]
+strava_main <- strava[strava$time > "2022-03-11 09:03:00" & strava$time < "2022-03-11 09:33:00",]
+strava_peipposenrinne <- strava[strava$time > "2022-03-11 09:35:00" & strava$time < "2022-03-11 09:39:00",]
+# ggplot(strava_main) +
+#   geom_sf()
 
-## Check route and filter by time 
-ggplot(strava[strava$time > "2022-03-11 09:02:00" & strava$time < "2022-03-11 09:38:50",]) + 
-  geom_sf() 
-strava <- strava[strava$time > "2022-03-11 09:03:00" & strava$time < "2022-03-11 09:39:00",]
+## Strava arton polku
+df_strava <- gpx_to_pts("data/puijo/strava__7311322229.gpx")
+strava <- st_transform(df_strava, crs = crs(puijo))
+strava_artonpolu <- strava[strava$time > "1970-01-01 00:56:00" & strava$time < "1970-01-01 00:58:00",]
 
+## Strava tukkimetsa
+df_strava <- gpx_to_pts("data/puijo/strava__7308594430.gpx")
+strava <- st_transform(df_strava, crs = crs(puijo))
+strava_tukkimetsa <- strava[strava$time > "1970-01-01 00:19:55" & strava$time < "1970-01-01 00:22:42",]
+# ggplot(strava_tukkimetsa) +
+#   geom_sf()
+
+## Strava muurahaispesa
+df_strava <- gpx_to_pts("data/puijo/strava__7251760118.gpx")
+strava <- st_transform(df_strava, crs = crs(puijo))
+strava_muurahaispesa <- strava[strava$time > "1970-01-01 01:26:52" & strava$time < "1970-01-01 01:29:51",]
+
+## Strava antikkala
+df_strava <- gpx_to_pts("data/puijo/strava__7172755886.gpx")
+strava <- st_transform(df_strava, crs = crs(puijo))
+strava_antikkala1 <- strava[strava$time > "1970-01-01 00:51:20" & strava$time < "1970-01-01 00:53:31",]
+# ggplot(strava_antikkala1) +
+#   geom_sf()
 
 ## Add Features -----
 osm_bbox = c(long_range[1],lat_range[1], long_range[2],lat_range[2])
@@ -182,12 +207,37 @@ base_map %>%
   add_overlay(layer_scrub, alphalayer = 0.9) %>%
   add_overlay(layer_buildings) %>%
   add_overlay(layer_trails) %>%
-  add_overlay(generate_line_overlay(strava,
+  add_overlay(generate_line_overlay(strava_main, lty = 3,
                                     extent = extent_zoomed,
                                     linewidth = 10, 
                                     color="red",
                                     heightmap = puijo_zoom_mat)) %>% 
-  plot_map(title_text = "Puijo, Kuopio. Data: Maanmittauslaitos Maastotietokanta 03/2022 & OpenStreetMap.org", title_offset = c(15,15),
+  add_overlay(generate_line_overlay(strava_artonpolu,
+                                    extent = extent_zoomed,
+                                    linewidth = 7, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  add_overlay(generate_line_overlay(strava_muurahaispesa,
+                                    extent = extent_zoomed,
+                                    linewidth = 7, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  add_overlay(generate_line_overlay(strava_tukkimetsa,
+                                    extent = extent_zoomed,
+                                    linewidth = 7, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  add_overlay(generate_line_overlay(strava_peipposenrinne,
+                                    extent = extent_zoomed,
+                                    linewidth = 7, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  add_overlay(generate_line_overlay(strava_antikkala1,
+                                    extent = extent_zoomed,
+                                    linewidth = 7, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  plot_map(title_text = "Puijon maastopyöräilyreitit", title_offset = c(15,15),
            title_bar_color = "grey5", title_color = "white", title_bar_alpha = 1)
 
 #### Final 3d map -----
@@ -199,9 +249,34 @@ base_map %>%
   add_overlay(layer_scrub, alphalayer = 0.9) %>%
   add_overlay(layer_buildings) %>%
   add_overlay(layer_trails) %>%
-  add_overlay(generate_line_overlay(strava,
+  add_overlay(generate_line_overlay(strava_main, lty = 2,
                                     extent = extent_zoomed,
                                     linewidth = 10, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  add_overlay(generate_line_overlay(strava_artonpolu,
+                                    extent = extent_zoomed,
+                                    linewidth = 9, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  add_overlay(generate_line_overlay(strava_muurahaispesa,
+                                    extent = extent_zoomed,
+                                    linewidth = 9, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  add_overlay(generate_line_overlay(strava_tukkimetsa,
+                                    extent = extent_zoomed,
+                                    linewidth = 9, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  add_overlay(generate_line_overlay(strava_peipposenrinne,
+                                    extent = extent_zoomed,
+                                    linewidth = 9, 
+                                    color="red",
+                                    heightmap = puijo_zoom_mat)) %>% 
+  add_overlay(generate_line_overlay(strava_antikkala1,
+                                    extent = extent_zoomed,
+                                    linewidth = 7, 
                                     color="red",
                                     heightmap = puijo_zoom_mat)) %>% 
   plot_3d(puijo_zoom_mat, windowsize=c(1200,800))
@@ -211,7 +286,7 @@ render_snapshot()
 
 #### To Movie ----
 if(interactive()) {
-  filename_movie = "puijo3.mp4" #tempfile()
+  filename_movie = "img/trailmaps/puijoenduro.mp4" #tempfile()
   
   #By default, the function produces a 12 second orbit at 30 frames per second, at 30 degrees azimuth.
   # \donttest{
@@ -227,12 +302,38 @@ if(interactive()) {
     add_overlay(layer_scrub, alphalayer = 0.9) %>%
     add_overlay(layer_buildings) %>%
     add_overlay(layer_trails) %>%
-    # add_overlay(generate_line_overlay(strava,
-    #                                   extent = extent_zoomed,
-    #                                   linewidth = 10, 
-    #                                   color="red",
-    #                                   heightmap = puijo_zoom_mat)) %>% 
-    plot_3d(puijo_zoom_mat, windowsize=c(1200,800))
+    add_overlay(generate_line_overlay(strava_main, lty = 2,
+                                      extent = extent_zoomed,
+                                      linewidth = 10, 
+                                      color="red",
+                                      heightmap = puijo_zoom_mat)) %>% 
+    add_overlay(generate_line_overlay(strava_artonpolu,
+                                      extent = extent_zoomed,
+                                      linewidth = 9, 
+                                      color="red",
+                                      heightmap = puijo_zoom_mat)) %>% 
+    add_overlay(generate_line_overlay(strava_muurahaispesa,
+                                      extent = extent_zoomed,
+                                      linewidth = 9, 
+                                      color="red",
+                                      heightmap = puijo_zoom_mat)) %>% 
+    add_overlay(generate_line_overlay(strava_tukkimetsa,
+                                      extent = extent_zoomed,
+                                      linewidth = 9, 
+                                      color="red",
+                                      heightmap = puijo_zoom_mat)) %>% 
+    add_overlay(generate_line_overlay(strava_peipposenrinne,
+                                      extent = extent_zoomed,
+                                      linewidth = 9, 
+                                      color="red",
+                                      heightmap = puijo_zoom_mat)) %>% 
+    add_overlay(generate_line_overlay(strava_antikkala1,
+                                      extent = extent_zoomed,
+                                      linewidth = 7, 
+                                      color="red",
+                                      heightmap = puijo_zoom_mat)) %>% 
+    # plot_3d(puijo_zoom_mat, windowsize=c(1200,800))
+  plot_3d(puijo_zoom_mat, windowsize=c(800,1200))
   #Un-comment the following to run:
   render_movie(filename = filename_movie, zoom = .4, fov = 60, phi = 30)
 }

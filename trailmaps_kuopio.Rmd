@@ -1,11 +1,17 @@
 ---
 title: "Kuopion reittikartat"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+**Data:** Maanmittauslaitos Maastotietokanta 04/2022 & OpenStreetMap.org
 
 ## Puijo
 
@@ -14,6 +20,14 @@ knitr::opts_chunk$set(echo = FALSE)
 </video>
 
 ![](img/trailmaps/puijo_trailmap.png)
+
+## Neulamäki
+
+<video width="640" height="480" autoplay loop>
+  <source src="https://research.janimiettinen.fi/material/trailmaps/img/trailmaps/neulamaki.mp4" type="video/mp4">
+</video>
+
+![](img/trailmaps/neulamaki.png)
 
 ## Jynkävuori
 

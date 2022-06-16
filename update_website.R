@@ -2,8 +2,6 @@
 ## Render rmd and 
 rmarkdown::render("trailmaps_kuopio.Rmd", output_dir = "output_website", output_file = "index.html")
 
-## Copy outputdata
-
 ## Move to kapsi ----
 if(TRUE){
   system("scp -r ./output_website/* janikmiet@kapsi.fi:/home/users/janikmiet/sites/research.janimiettinen.fi/www/material/trailmaps")
